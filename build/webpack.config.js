@@ -1,11 +1,12 @@
 const path = require('path')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const extractLess = new ExtractTextWebpackPlugin('css/[name].[hash].css')
 // const extractSass = new ExtractTextWebpackPlugin('css/[name].[hash].css')
-const extractCss = new ExtractTextWebpackPlugin('css/[name].[hash].css')
+// const extractCss = new ExtractTextWebpackPlugin('css/[name].[hash].css')
 
 module.exports = {
     mode: 'development',
@@ -21,7 +22,12 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: ExtractTextWebpackPlugin(['style-loader', 'css-loader'])
+                // use: ExtractTextWebpackPlugin({
+                //     fallback: "style-loader",
+                //     use: 'css-loader'
+                // })
+                use: ExtractTextWebpackPlugin.extract("style-loader","css-loader")
+                // use: ["style-loader",'css-loader']
             },
             // {
             //     test: /\.scss$/,
@@ -54,6 +60,7 @@ module.exports = {
         //     filename: "[name].[hash].css",
         //     chunkFilename: '[id].css'
         // }),
-        new ExtractTextWebpackPlugin('[name].[hash].css')
+        new ExtractTextWebpackPlugin('[name].css'),
+        new BundleAnalyzerPlugin()
     ]
 }

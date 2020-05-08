@@ -1,2 +1,2 @@
 import './assets/main.css'
-console.log('hello webpack!')
+console.log('hello webpack!!')
