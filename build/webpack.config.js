@@ -6,7 +6,7 @@ const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const extractLess = new ExtractTextWebpackPlugin('css/[name].[hash].css')
 // const extractSass = new ExtractTextWebpackPlugin('css/[name].[hash].css')
-// const extractCss = new ExtractTextWebpackPlugin('css/[name].[hash].css')
+// const extractCss = new ExtractTextWebpackPlugin('[name].[hash].css')
 
 module.exports = {
     mode: 'development',
@@ -26,22 +26,24 @@ module.exports = {
                 //     fallback: "style-loader",
                 //     use: 'css-loader'
                 // })
-                use: ExtractTextWebpackPlugin.extract("style-loader","css-loader")
-                // use: ["style-loader",'css-loader']
+                // use: extractCss.extract({use: ["css-loader"]})
+                use: ["style-loader",'css-loader']
             },
-            // {
-            //     test: /\.scss$/,
-            //     use: extractSass.extract(['style-loader', 'css-loader', 'sass-loader'])
-            // },
-            // {
-            //     test: /\.less$/,
-            //     use: extractLess.extract(['style-loader', 'css-loader', {
-            //         loader: 'postcss-loader',
-            //         options: {
-            //             plugins: [require('autoprefixer')]
-            //         }
-            //     },'less-loader'])
-            // }
+            {
+                test: /\.scss$/,
+                use: ['style-loader', 'css-loader', 'sass-loader']
+                // use: extractSass.extract(['style-loader', 'css-loader', 'sass-loader'])
+            },
+            {
+                test: /\.less$/,
+                use: ['style-loader', 'css-loader', 'less-loader']
+                // use: extractLess.extract(['style-loader', 'css-loader', {
+                //     loader: 'postcss-loader',
+                //     options: {
+                //         plugins: [require('autoprefixer')]
+                //     }
+                // },'less-loader'])
+            }
         ]
     },
     plugins: [
@@ -50,17 +52,7 @@ module.exports = {
             filename: 'main.html',
             chunks: ['main']
         }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../public/backstage.html'),
-            filename: 'backstage.html',
-            chunks: ['backstage']
-        }),
         new CleanWebpackPlugin(),
-        // new MiniCssExtractPlugin({
-        //     filename: "[name].[hash].css",
-        //     chunkFilename: '[id].css'
-        // }),
-        new ExtractTextWebpackPlugin('[name].css'),
         new BundleAnalyzerPlugin()
     ]
 }

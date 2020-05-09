@@ -1,2 +1,3 @@
 import './assets/main.css'
-console.log('hello webpack!!')
+import './assets/backstage.css'
+console.log('hello webpack!!!')
