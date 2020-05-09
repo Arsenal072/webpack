@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js!./src/assets/backstage.css":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js!./src/assets/backstage.css ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/_css-loader@3.5.3@css-loader/dist/runtime/api.js */ \"./node_modules/_css-loader@3.5.3@css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \"*{\\r\\n    margin: 0;\\r\\n    padding: 0;\\r\\n}\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./src/assets/backstage.css?./node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js");
+
+/***/ }),
+
 /***/ "./node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js!./src/assets/main.css":
 /*!*************************************************************************************!*\
   !*** ./node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js!./src/assets/main.css ***!
@@ -121,6 +132,17 @@ eval("\n\nvar isOldIE = function isOldIE() {\n  var memo;\n  return function mem
 
 /***/ }),
 
+/***/ "./src/assets/backstage.css":
+/*!**********************************!*\
+  !*** ./src/assets/backstage.css ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var api = __webpack_require__(/*! ../../node_modules/_style-loader@1.2.1@style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/_style-loader@1.2.1@style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js!./backstage.css */ \"./node_modules/_css-loader@3.5.3@css-loader/dist/cjs.js!./src/assets/backstage.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack:///./src/assets/backstage.css?");
+
+/***/ }),
+
 /***/ "./src/assets/main.css":
 /*!*****************************!*\
   !*** ./src/assets/main.css ***!
@@ -140,7 +162,7 @@ eval("var api = __webpack_require__(/*! ../../node_modules/_style-loader@1.2.1@s
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _assets_main_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./assets/main.css */ \"./src/assets/main.css\");\n/* harmony import */ var _assets_main_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_main_css__WEBPACK_IMPORTED_MODULE_0__);\n\r\nconsole.log('hello webpack!')\n\n//# sourceURL=webpack:///./src/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _assets_main_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./assets/main.css */ \"./src/assets/main.css\");\n/* harmony import */ var _assets_main_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_main_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _assets_backstage_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/backstage.css */ \"./src/assets/backstage.css\");\n/* harmony import */ var _assets_backstage_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_assets_backstage_css__WEBPACK_IMPORTED_MODULE_1__);\n\r\n\r\nconsole.log('hello webpack!!!')\n\n//# sourceURL=webpack:///./src/main.js?");
 
 /***/ })
 

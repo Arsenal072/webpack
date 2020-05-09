@@ -3,7 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // const extractLess = new ExtractTextWebpackPlugin('css/[name].[hash].css')
 // const extractSass = new ExtractTextWebpackPlugin('css/[name].[hash].css')
 // const extractCss = new ExtractTextWebpackPlugin('[name].[hash].css')
@@ -43,7 +43,8 @@ module.exports = {
                 //         plugins: [require('autoprefixer')]
                 //     }
                 // },'less-loader'])
-            }
+            },
+            
         ]
     },
     plugins: [
