@@ -1,2 +1,2 @@
-import './assets/backstage.css'
+import './assets/css/backstage.css'
 console.log('hello backstage!')

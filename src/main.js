@@ -1,3 +1,8 @@
-import './assets/main.css'
-import './assets/backstage.css'
-console.log('hello webpack!!!')
+import './assets/css/main.css'
+import './assets/css/backstage.css'
+import Vue from 'vue'
+import App from './app.vue'
+
+new Vue({
+    render: h=> h(App)
+}).$mount('#app')

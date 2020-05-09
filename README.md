@@ -41,7 +41,42 @@ cnpm i -D less less-loader
 cnpm i -D postcss-loader autoprefixer
 ```
 
+##### file-loader
 
+将文件在进行一些处理后（主要是处理文件名和路径、解析文件url），并将文件移动到输出的目录中
+
+##### url-loader
+
+一般与`file-loader`搭配使用，功能与 file-loader 类似，如果文件小于限制的大小，则会返回 base64 编码，否则使用 file-loader 将文件移动到输出的目录中
+
+##### babel-loader
+
+```js
+cnpm i -D babel-loader @babel/preset-env @babel/core
+```
+
+`babel-loader`只会将 ES6/7/8语法转换为ES5语法，但对新api并不会转换 例如(promise、Generator、Set、Maps、Proxy等)。此时我们需要借助babel-polyfill来帮助我们转换。
+
+##### babel-polyfill
+
+```js
+module.exports = {
+    entry:["@babel/polyfill",path.resolve(__dirname,'../src/index.js')],// 入口文件
+}
+```
+
+##### vue-loader
+
+```js
+npm i -D vue-loader vue-template-compiler vue-style-loader
+npm i -S vue
+```
+
+用于解析`.vue`文件
+
+`vue-template-compiler` 用于编译模板
+
+##### webpack-dev-server
 
 #### plugins
 
