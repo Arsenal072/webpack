@@ -2,6 +2,7 @@
 <template>
     <div class='app-wrapper'>
         <span>app运行成功哈哈哈哈</span>
+        <p>风格化风格化风格化</p>
     </div>
 </template>
 
