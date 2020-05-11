@@ -82,6 +82,13 @@ npm i -S vue
 
 ##### html-webpack-plugin   
 
+```js
+new HtmlWebpackPlugin({
+    template: path.resolve(__dirname, '../public/index.html'),
+    filename: 'index.html'
+})//当多入口时，则其中
+```
+
 ##### clean-webpack-plugin 
 
 ##### extract-text-webpack-plugin 
@@ -100,3 +107,16 @@ webpack 4.0以前，我们通过extract-text-webpack-plugin插件，把css样式
 ##### webpack-bundle-analyzer  
 
 webpack打包性能可视化插件  
+
+##### webpack-dev-server
+
+```js
+  devServer:{
+    port:3000,
+    hot:true,
+    contentBase:'../dist'   //开发环境输出文件目录
+  },
+  plugins:[
+    new Webpack.HotModuleReplacementPlugin()
+  ]
+```
