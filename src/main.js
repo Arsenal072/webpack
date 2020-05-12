@@ -1,7 +1,6 @@
-import './assets/css/main.css'
-import './assets/css/backstage.css'
 import Vue from 'vue'
 import App from './app.vue'
+import './assets/css/main.css'
 
 new Vue({
     render: h=> h(App)

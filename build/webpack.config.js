@@ -1,5 +1,4 @@
 const path = require('path')
-const Webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {
     CleanWebpackPlugin
@@ -8,11 +7,13 @@ const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
 // const extractLess = new ExtractTextWebpackPlugin('css/[name].[hash].css')
-const extractSass = new ExtractTextWebpackPlugin('[name].[hash].scss')
-const extractCss = new ExtractTextWebpackPlugin('[name].[hash].css')
+const extractSass = new ExtractTextWebpackPlugin('css/[name].[hash].css')
+const extractCss = new ExtractTextWebpackPlugin('css/[name].[hash].css')
+const HappyPack = require('happypack')
+const os = require('os')
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 
 module.exports = {
-    mode: 'development',
     entry: {
         main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')],
         backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
@@ -20,45 +21,63 @@ module.exports = {
     output: {
         filename: 'js/[name].[hash:8].js',
         path: path.resolve(__dirname, '../dist'),
+        chunkFilename: 'js/[name].[hash:8].js'
     },
     module: {
         rules: [{
-
                 test: /\.vue$/,
-                use: ['vue-loader']
+                use: [{
+                    loader: 'vue-loader',
+                    options: {
+                        compilerOptions: {
+                            preserveWhitespace: false
+                        }
+                    }
+                }],
+                exclude: /node_modules/,
+                include: [path.resolve(__dirname, '../src')]
             }, {
                 test: /\.css$/,
                 use: extractCss.extract({
                     fallback: "style-loader",
-                    use: 'css-loader'
-                })
-                // use: ["style-loader", 'css-loader']
+                    use: ['css-loader', {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [require('autoprefixer')],
+                        }
+                    }]
+                }),
+                exclude: /node_modules/
             },
             {
                 test: /\.scss$/,
                 use: extractSass.extract({
                     fallback: "style-loader",
-                    use: ['style-loader', 'css-loader', 'sass-loader']
-                })
+                    use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                }),
+                exclude: /node_modules/
             },
             {
                 test: /\.less$/,
-                use: ['style-loader', 'css-loader', 'less-loader']
-                // use: extractLess.extract(['style-loader', 'css-loader', {
-                //     loader: 'postcss-loader',
-                //     options: {
-                //         plugins: [require('autoprefixer')]
-                //     }
-                // },'less-loader'])
+                use: ['style-loader', 'css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: [require('autoprefixer')],
+                        
+                    }
+                }, 'less-loader'],
+                exclude: /node_modules/
             },
             {
-                test: /\.(js|jsx)$/,
+                test: /\.js$/,
                 use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
+                    loader: 'happypack/loader?id=happyBabel'
+                    // loader: 'babel-loader',
+                    // options: {
+                    //     presets: ['@babel/preset-env']
+                    // }
+                },
+                exclude: /node_modules/
             },
             {
                 test: /\.(jpe?g|png|gif)$/i, //图片文件
@@ -69,11 +88,13 @@ module.exports = {
                         fallback: {
                             loader: 'file-loader',
                             options: {
-                                name: 'img/[name].[hash:8].[ext]'
+                                name: 'img/[name].[hash:8].[ext]',
+                                publicPath: '../'
                             }
                         }
                     }
-                }]
+                }],
+                exclude: /node_modules/
             },
             {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, //媒体文件
@@ -84,11 +105,12 @@ module.exports = {
                         fallback: {
                             loader: 'file-loader',
                             options: {
-                                name: 'media/[name].[hash:8].[ext]'
+                                name: 'media/[name].[hash:8].[ext]',
                             }
                         }
                     }
-                }]
+                }],
+                exclude: /node_modules/
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, // 字体
@@ -103,15 +125,18 @@ module.exports = {
                             }
                         }
                     }
-                }]
+                }],
+                exclude: /node_modules/
             }
 
         ]
     },
-    resolve:{
+    resolve: {
         alias: {
             'vue$': 'vue/dist/vue.runtime.esm.js',
-            ' @': path.resolve(__dirname, '../src')
+            ' @': path.resolve(__dirname, '../src'),
+            'assets': path.resolve(__dirname, '../src/assets'),
+            'components': path.resolve(__dirname, '../src/components')
         },
         extensions: ['*', '.js', '.json', '.vue']
     },
@@ -119,8 +144,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../public/index.html'),
             filename: 'index.html',
-            chunks: ['main'],
-            title: '哈哈哈哈'
+            chunks: ['main']
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../public/backstage.html'),
@@ -132,12 +156,25 @@ module.exports = {
         new CleanWebpackPlugin(),
         new BundleAnalyzerPlugin(),
         new vueLoaderPlugin(),
-        new Webpack.HotModuleReplacementPlugin()
-    ],
-    devServer: {
-        port: 4000,
-        hot: true,
-        contentBase: '../dist'
-    }
+        new HappyPack({
+            id: 'happyBabel',
+            loaders: [{
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env'],
+                    cacheDirectory: true
+                }
+            }],
+            threadPool: happyThreadPool
+        })
+    ]
 }
-//多入口如何访问backstage.html
+//8428ms
+//打包大小1.34M
+// 更新速度321ms
+
+//happyPack
+//8961ms
+//打包大小1.34M
+//更新速度279ms
+
