@@ -1,6 +1,14 @@
 # webpack
 #### webpack基本配置
 
+#####  生产依赖与开发依赖(-D、-S)
+
+开发依赖：devDependencies，开发环境依赖，它里面的包只用于开发环境，不用于生产环境，这些包通常是单元测试或者打包工具等，例如gulp, grunt, webpack, moca, coffee等
+
+#####  生产依赖
+
+生产依赖：dependencies，应用依赖，或者叫做业务依赖，它用于指定应用依赖的外部包，这些依赖是应用发布后正常执行时所需要的，但不包含测试时或者本地打包时所使用的包。
+
 ##### mode
 
 production||development
@@ -114,9 +122,62 @@ webpack打包性能可视化插件
   devServer:{
     port:3000,
     hot:true,
-    contentBase:'../dist'   //开发环境输出文件目录
+    contentBase:'../dist'   //开发环境输出资源文件目录
   },
   plugins:[
     new Webpack.HotModuleReplacementPlugin()
   ]
 ```
+
+##### `webpack.dev.js` 开发环境配置文件
+
+开发环境主要实现的是热更新,不要压缩代码，完整的sourceMap
+
+##### `webpack.prod.js` 生产环境配置文件
+
+生产环境主要实现的是压缩代码、提取css文件、合理的sourceMap、分割代码
+
+- `webpack-merge` 合并配置
+- `copy-webpack-plugin` 拷贝静态资源
+- `optimize-css-assets-webpack-plugin` 压缩css
+- `uglifyjs-webpack-plugin` 压缩js
+
+`webpack mode`设置`production`的时候会自动压缩js代码。原则上不需要引入`uglifyjs-webpack-plugin`进行重复工作。但是`optimize-css-assets-webpack-plugin`压缩css的同时会破坏原有的js压缩，所以这里我们引入`uglifyjs`进行压缩
+
+
+
+##### 引入全局样式
+
+#### 优化webpack配置
+
+##### 优化打包速度
+
+构建速度指的是我们每次修改代码后热更新的速度以及发布前打包文件的速度。
+
+##### 合理的配置mode参数与devtool参数
+
+`mode`可设置`development`` production`两个参数，如果没有设置，`webpack4` 会将 `mode` 的默认值设置为 `production` .`production`模式下会进行`tree shaking`(去除无用代码)和`uglifyjs`(代码压缩混淆)
+
+##### 缩小文件的搜索范围(配置include exclude alias noParse extensions)
+
+- `alias`: 当我们代码中出现 `import 'vue'`时， webpack会采用向上递归搜索的方式去`node_modules` 目录下找。为了减少搜索范围我们可以直接告诉webpack去哪个路径下查找。也就是别名(`alias`)的配置。
+- `include exclude` 同样配置`include exclude`也可以减少`webpack loader`的搜索转换时间。
+- `noParse ` 当我们代码中使用到`import jq from 'jquery'`时，`webpack`会去解析jq这个库是否有依赖其他的包。但是我们对类似`jquery`这类依赖库，一般会认为不会引用其他的包(特殊除外,自行判断)。增加`noParse`属性,告诉`webpack`不必解析，以此增加打包速度。
+- extensions webpack会根据extensions定义的后缀查找文件(频率较高的文件类型优先写在前面) 
+
+##### 使用HappyPack开启多进程Loader转换
+
+在webpack构建过程中，实际上耗费时间大多数用在loader解析转换以及代码的压缩中。日常开发中我们需要使用Loader对js，css，图片，字体等文件做转换操作，并且转换的文件数据量也是非常大。由于js单线程的特性使得这些转换操作不能并发处理文件，而是需要一个个文件进行处理。HappyPack的基本原理是将这部分任务分解到多个子进程中去并行处理，子进程处理完成后把结果发送到主进程中，从而减少总的构建时间
+
+
+
+##### 使用webpack-parallel-uglify-plugin 增强代码压缩,优化代码的压缩时间
+
+```js
+npm i -D webpack-parallel-uglify-plugin
+```
+
+
+
+体积：914 KB
+
