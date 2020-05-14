@@ -1,14 +1,14 @@
 const path = require('path')
+
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin')
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
-// const extractLess = new ExtractTextWebpackPlugin('css/[name].[hash].css')
-const extractSass = new ExtractTextWebpackPlugin('css/[name].[hash].css')
-const extractCss = new ExtractTextWebpackPlugin('css/[name].[hash].css')
+// const CopyWebapckPlugin = require('copy-webpack-plugin')
 const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
@@ -34,11 +34,10 @@ module.exports = {
                         }
                     }
                 }],
-                exclude: /node_modules/,
                 include: [path.resolve(__dirname, '../src')]
             }, {
                 test: /\.css$/,
-                use: extractCss.extract({
+                use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
                     use: ['css-loader', {
                         loader: 'postcss-loader',
@@ -47,15 +46,13 @@ module.exports = {
                         }
                     }]
                 }),
-                exclude: /node_modules/
             },
             {
                 test: /\.scss$/,
-                use: extractSass.extract({
+                use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
                     use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
-                }),
-                exclude: /node_modules/
+                })
             },
             {
                 test: /\.less$/,
@@ -66,17 +63,16 @@ module.exports = {
                         
                     }
                 }, 'less-loader'],
-                exclude: /node_modules/
             },
             {
                 test: /\.js$/,
-                use: {
+                use: [{
                     loader: 'happypack/loader?id=happyBabel'
                     // loader: 'babel-loader',
                     // options: {
                     //     presets: ['@babel/preset-env']
                     // }
-                },
+                }],
                 exclude: /node_modules/
             },
             {
@@ -94,7 +90,6 @@ module.exports = {
                         }
                     }
                 }],
-                exclude: /node_modules/
             },
             {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, //媒体文件
@@ -110,7 +105,6 @@ module.exports = {
                         }
                     }
                 }],
-                exclude: /node_modules/
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, // 字体
@@ -126,7 +120,6 @@ module.exports = {
                         }
                     }
                 }],
-                exclude: /node_modules/
             }
 
         ]
@@ -134,7 +127,7 @@ module.exports = {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.runtime.esm.js',
-            ' @': path.resolve(__dirname, '../src'),
+            '@': path.resolve(__dirname, '../src'),
             'assets': path.resolve(__dirname, '../src/assets'),
             'components': path.resolve(__dirname, '../src/components')
         },
@@ -151,8 +144,7 @@ module.exports = {
             filename: 'backstage.html',
             chunks: ['backstage']
         }),
-        extractCss,
-        extractSass,
+        new ExtractTextPlugin('css/[name].[hash].css'),
         new CleanWebpackPlugin(),
         new BundleAnalyzerPlugin(),
         new vueLoaderPlugin(),
@@ -165,16 +157,18 @@ module.exports = {
                     cacheDirectory: true
                 }
             }],
-            threadPool: happyThreadPool
-        })
+            threadPool: happyThreadPool//共享进程池
+        }),
+        // new webpack.DllPlugin({
+        //     context: __dirname,
+        //     manifest: require('./vendor-manifest.json')
+        // }),
+        // new CopyWebapckPlugin([{
+        //     from: 'static',
+        //     to: 'static'
+        // }])
     ]
 }
-//8428ms
-//打包大小1.34M
-// 更新速度321ms
 
-//happyPack
-//8961ms
-//打包大小1.34M
-//更新速度279ms
+
 

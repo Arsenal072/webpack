@@ -8,7 +8,6 @@ module.exports = WebpackMerge(webpackConfig, {
     devServer: {
         port: 4000,
         hot: true,
-        open: true,
         contentBase: '../dist'
     },
     plugins: [

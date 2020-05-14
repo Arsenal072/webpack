@@ -1,6 +1,14 @@
 # webpack
 #### webpack基本配置
 
+#####  生产依赖与开发依赖(-D、-S)
+
+开发依赖：devDependencies，开发环境依赖，它里面的包只用于开发环境，不用于生产环境，这些包通常是单元测试或者打包工具等，例如gulp, grunt, webpack, moca, coffee等
+
+#####  生产依赖
+
+生产依赖：dependencies，应用依赖，或者叫做业务依赖，它用于指定应用依赖的外部包，这些依赖是应用发布后正常执行时所需要的，但不包含测试时或者本地打包时所使用的包。
+
 ##### mode
 
 production||development
@@ -168,4 +176,8 @@ webpack打包性能可视化插件
 ```js
 npm i -D webpack-parallel-uglify-plugin
 ```
+
+
+
+体积：914 KB
 
