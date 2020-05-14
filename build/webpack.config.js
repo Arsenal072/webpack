@@ -49,7 +49,7 @@ module.exports = {
                 //     options: {
                 //         plugins: [require('autoprefixer')]
                 //     }
-                // },'less-loader'])
+                // },'less-loader'])`
             },
             {
                 test: /\.(js|jsx)$/,
