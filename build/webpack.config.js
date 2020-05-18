@@ -21,7 +21,7 @@ module.exports = {
     output: {
         filename: 'js/[name].[hash:8].js',
         path: path.resolve(__dirname, '../dist'),
-        chunkFilename: 'js/[name].[hash:8].js'
+        chunkFilename: 'js/[name].[hash:8].js',
     },
     module: {
         rules: [{
@@ -167,7 +167,16 @@ module.exports = {
         //     from: 'static',
         //     to: 'static'
         // }])
-    ]
+    ],
+    optimization:{
+        //帮我们⾃动做代码分割
+        splitChunks:{
+            chunks:"all",//默认是⽀持异步，我们使⽤all
+        }
+    },
+    externals: {
+        ElementUI: 'ElementUI'
+    }
 }
 
 

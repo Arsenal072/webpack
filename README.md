@@ -26,7 +26,14 @@ path:
 publicPath:
 ```
 
+`publicPath`设置成相对路径后，相对路径是相对于build之后的index.html的，例如，如果设置`publicPath: './dist/'`，则打包后js的引用路径为`./dist/main.js`，但是这里有一个问题，相对路径在访问本地时可以，但是如果将静态资源托管到CDN上则访问路径显然不能使用相对路径，但是如果将`publicPath`设置成`/`，则打包后访问路径为`localhost:8080/dist/main.js`，本地无法访问
 
+url根路径
+
+### devServer.publicPath & devServer.contentBase
+
+- devServer.contentBase 告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要。
+- devServer.publicPath 将用于确定应该从哪里提供 bundle，并且此选项优先。
 
 #### loader
 
@@ -87,6 +94,8 @@ npm i -S vue
 ##### webpack-dev-server
 
 #### plugins
+
+loader用于转换非JavaScript类型的文件，而插件可以用于执行范围更广的任务，包括打包、优化、压缩、搭建服务器等等，功能十分强大。要是用一个插件，一般是先使用npm包管理器进行安装，然后在配置文件中引入，最后将其实例化后传递给plugins数组属性。
 
 ##### html-webpack-plugin   
 
@@ -176,8 +185,4 @@ webpack打包性能可视化插件
 ```js
 npm i -D webpack-parallel-uglify-plugin
 ```
-
-
-
-体积：914 KB
 
