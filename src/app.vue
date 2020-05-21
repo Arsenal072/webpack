@@ -7,6 +7,7 @@
             <div>等分效果</div>
             <div>等分效果</div>
         </div>
+        <button @click="a">点击引入js</button>
     </div>
 </template>
 
@@ -19,7 +20,14 @@ export default {
         return {};
     },
 
-    methods: {}
+    methods: {
+        a(){
+            import(/* webpackChunkName: "test" */ './test').then((module)=>{
+                const test = module.default
+                test()
+            })
+        }
+    }
 };
 </script>
 <style lang='scss' scoped>

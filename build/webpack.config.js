@@ -7,35 +7,37 @@ const {
 } = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const vueLoaderPlugin = require('vue-loader/lib/plugin')
+// const vueLoaderPlugin = require('vue-loader/lib/plugin')
 // const CopyWebapckPlugin = require('copy-webpack-plugin')
-const HappyPack = require('happypack')
-const os = require('os')
-const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
+// const HappyPack = require('happypack')
+// const os = require('os')
+// const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 
 module.exports = {
     entry: {
         main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')],
-        backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
+        // backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
     },
     output: {
         filename: 'js/[name].[hash:8].js',
         path: path.resolve(__dirname, '../dist'),
-        chunkFilename: 'js/[name].[hash:8].js',
+        chunkFilename: 'js/[name]_lazy-chunk.js',
     },
     module: {
-        rules: [{
-                test: /\.vue$/,
-                use: [{
-                    loader: 'vue-loader',
-                    options: {
-                        compilerOptions: {
-                            preserveWhitespace: false
-                        }
-                    }
-                }],
-                include: [path.resolve(__dirname, '../src')]
-            }, {
+        rules: [
+            // {
+            //     test: /\.vue$/,
+            //     use: [{
+            //         loader: 'vue-loader',
+            //         options: {
+            //             compilerOptions: {
+            //                 preserveWhitespace: false
+            //             }
+            //         }
+            //     }],
+            //     include: [path.resolve(__dirname, '../src')]
+            // }, 
+            {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
@@ -67,11 +69,11 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: [{
-                    loader: 'happypack/loader?id=happyBabel'
-                    // loader: 'babel-loader',
-                    // options: {
-                    //     presets: ['@babel/preset-env']
-                    // }
+                    // loader: 'happypack/loader?id=happyBabel'
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
                 }],
                 exclude: /node_modules/
             },
@@ -85,7 +87,7 @@ module.exports = {
                             loader: 'file-loader',
                             options: {
                                 name: 'img/[name].[hash:8].[ext]',
-                                publicPath: '../'
+                                // publicPath: '../'
                             }
                         }
                     }
@@ -139,26 +141,27 @@ module.exports = {
             filename: 'index.html',
             chunks: ['main']
         }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../public/backstage.html'),
-            filename: 'backstage.html',
-            chunks: ['backstage']
-        }),
-        new ExtractTextPlugin('css/[name].[hash].css'),
+        // new HtmlWebpackPlugin({
+        //     template: path.resolve(__dirname, '../public/backstage.html'),
+        //     filename: 'backstage.html',
+        //     chunks: ['backstage']
+        // }),
+        new ExtractTextPlugin('css/[name]_[hash:8]_lazy.css'),
         new CleanWebpackPlugin(),
         new BundleAnalyzerPlugin(),
-        new vueLoaderPlugin(),
-        new HappyPack({
-            id: 'happyBabel',
-            loaders: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-env'],
-                    cacheDirectory: true
-                }
-            }],
-            threadPool: happyThreadPool//共享进程池
-        }),
+        // new vueLoaderPlugin(),
+        // new HappyPack({
+        //     id: 'happyBabel',
+        //     loaders: [{
+        //         loader: 'babel-loader',
+        //         options: {
+        //             presets: ['@babel/preset-env'],
+        //             cacheDirectory: true
+        //         }
+        //     }],
+        //     threadPool: happyThreadPool//共享进程池
+        // }),
+
         // new webpack.DllPlugin({
         //     context: __dirname,
         //     manifest: require('./vendor-manifest.json')
@@ -172,12 +175,24 @@ module.exports = {
         //帮我们⾃动做代码分割
         splitChunks:{
             chunks:"all",//默认是⽀持异步，我们使⽤all
+            maxInitialRequests: Infinity,
+            minSize: 300000, // 依赖包超过300000bit将被单独打包
+            automaticNameDelimiter: '-',
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                        return `chunk.${packageName.replace('@', '')}`;
+                    },
+                    priority: 10
+                }
+            }
         }
     },
-    externals: {
-        ElementUI: 'ElementUI'
-    }
+    // externals: {
+    //     ElementUI: 'ElementUI'
+    // }
 }
-
 
 
