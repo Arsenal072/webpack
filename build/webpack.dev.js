@@ -6,7 +6,7 @@ module.exports = WebpackMerge(webpackConfig, {
     mode: 'development',
     devtool: 'cheap-module-eval-source-map',
     devServer: {
-        port: 4000,
+        port: 8000,
         hot: true,
         contentBase: '../dist',
         compress: true

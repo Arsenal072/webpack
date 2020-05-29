@@ -15,13 +15,13 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = {
     entry: {
-        main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')],
-        // backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
+        main: path.resolve(__dirname, '../src/main.js'),
+        backstage: path.resolve(__dirname, '../src/backstage.js')
     },
     output: {
         filename: 'js/[name].[hash:8].js',
         path: path.resolve(__dirname, '../dist'),
-        chunkFilename: 'js/[name]_lazy-chunk.js',
+        chunkFilename: 'static/[name]_[chunkhash:8].js',
     },
     module: {
         rules: [
@@ -141,12 +141,12 @@ module.exports = {
             filename: 'index.html',
             chunks: ['main']
         }),
-        // new HtmlWebpackPlugin({
-        //     template: path.resolve(__dirname, '../public/backstage.html'),
-        //     filename: 'backstage.html',
-        //     chunks: ['backstage']
-        // }),
-        new ExtractTextPlugin('css/[name]_[hash:8]_lazy.css'),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, '../public/backstage.html'),
+            filename: 'backstage.html',
+            chunks: ['backstage']
+        }),
+        new ExtractTextPlugin('css/[name]_[chunkhash:8].css'),
         new CleanWebpackPlugin(),
         new BundleAnalyzerPlugin(),
         // new vueLoaderPlugin(),
@@ -171,25 +171,26 @@ module.exports = {
         //     to: 'static'
         // }])
     ],
-    optimization:{
-        //帮我们⾃动做代码分割
-        splitChunks:{
-            chunks:"all",//默认是⽀持异步，我们使⽤all
-            maxInitialRequests: Infinity,
-            minSize: 300000, // 依赖包超过300000bit将被单独打包
-            automaticNameDelimiter: '-',
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module) {
-                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                        return `chunk.${packageName.replace('@', '')}`;
-                    },
-                    priority: 10
-                }
-            }
-        }
-    },
+    // optimization:{
+    //     //帮我们⾃动做代码分割
+    //     splitChunks:{
+    //         chunks:"all",//默认是⽀持异步，我们使⽤all
+    //         maxInitialRequests: Infinity,
+    //         minSize: 300000, // 依赖包超过300000bit将被单独打包
+    //         automaticNameDelimiter: '-',
+    //         cacheGroups: {
+    //             vendor: {
+    //                 test: /[\\/]node_modules[\\/]/,
+    //                 name(module) {
+    //                     const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+    //                     return `chunk.${packageName.replace('@', '')}`;
+    //                 },
+    //                 priority: 10
+    //             }
+    //         }
+    //     }
+    // },
+
     // externals: {
     //     ElementUI: 'ElementUI'
     // }
