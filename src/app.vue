@@ -12,24 +12,40 @@ export default {
     components: {},
 
     data() {
-        return {
-            
-        };
+        return {};
+    },
+    created() {
+        // class Logger {
+        //     printName(name = "there") {
+        //         console.log('this',this)
+        //         this.print(`Hello ${name}`);
+        //     }
+
+        //     print(text) {
+        //         console.log(text);
+        //     }
+        // }
+
+        // const logger = new Logger();
+        // logger.printName()
+        console.log(Promise.resolve(1).then(res=>{console.log('2')}))
+        // const { printName } = logger;
+        // printName(); // TypeError: Cannot read property 'print' of undefined
     },
 
     methods: {}
 };
 </script>
 <style lang='scss' scoped>
-.app-wrapper{
+.app-wrapper {
     height: 1000px;
-    background-image: url('./assets/images/veer-141542994.jpg');
-    span{
+    background-image: url("./assets/images/veer-141542994.jpg");
+    span {
         font-size: 18px;
         color: orange;
         font-weight: bold;
     }
-    div{
+    div {
         box-shadow: 0 0 0 #000;
     }
 }
