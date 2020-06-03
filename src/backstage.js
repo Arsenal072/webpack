@@ -1,2 +1,6 @@
 import './assets/css/backstage.css'
-console.log('hello backstage!')
+import(/* webpackChunkName: "backstageTest" */ './test').then((module)=>{
+    const test = module.default
+    console.log('hello backstage!')
+    test()
+})
