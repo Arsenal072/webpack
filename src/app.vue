@@ -39,6 +39,7 @@ export default {
     },
 
     methods: {
+        
         a(){
             import(/* webpackChunkName: "test" */ './test').then((module)=>{
                 const test = module.default
