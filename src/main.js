@@ -9,8 +9,7 @@ import './assets/css/main.css'
 // new Vue({
 //     render: h=> h(App)
 // }).$mount('#app')
-
-import(/* webpackChunkName: "test" */ './test').then((module)=>{
+import( /* webpackChunkName: "test" */ './test').then((module) => {
     const test = module.default
     // function SupType(name){
     //     this.name = name
@@ -36,7 +35,7 @@ import(/* webpackChunkName: "test" */ './test').then((module)=>{
     // console.log('instance.colors',instance.colors)
     // instance.sayAge()
     // instance.sayName()
-    
+
     // function Person(){
     // }
     // Person.prototype = {
@@ -57,15 +56,27 @@ import(/* webpackChunkName: "test" */ './test').then((module)=>{
     // function SubType(){
     //     this.age = 'allen'
     // }
- 	// SubType.prototype = new SupType()
+    // SubType.prototype = new SupType()
     // SubType.prototype.sayAge = function(){
     //     console.log(this.name)
     // }
     // var instance = new SubType()
-    function inheritPrototype(SubType, SupType){
-        var prototype = Object.create(SupType.prototype) 
+    function inheritPrototype(SubType, SupType) {
+        var prototype = Object.create(SupType.prototype)
         prototype.constructor = SubType
-        SubType.prototype = prototype 
+        SubType.prototype = prototype
     }
     test()
+
+    let arr = [4, 7, 1, 3, 9, 6, 5]
+    for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - 1 - i; j++) {
+            if (arr[i] > arr[j + 1]) {
+                let temp = arr[j + 1]
+                arr[j + 1] = arr[i]
+                arr[i] = temp
+            }
+        }
+    }
+    console.log('arr',arr)
 })
