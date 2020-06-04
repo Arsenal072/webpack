@@ -19,7 +19,9 @@ export default {
     data() {
         return {};
     },
+    created(){
 
+    },
     methods: {
         a(){
             import(/* webpackChunkName: "test" */ './test').then((module)=>{

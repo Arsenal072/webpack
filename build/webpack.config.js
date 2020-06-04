@@ -7,7 +7,7 @@ const {
 } = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const vueLoaderPlugin = require('vue-loader/lib/plugin')
+const vueLoaderPlugin = require('vue-loader/lib/plugin')
 // const CopyWebapckPlugin = require('copy-webpack-plugin')
 // const HappyPack = require('happypack')
 // const os = require('os')
@@ -25,18 +25,18 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-            //     test: /\.vue$/,
-            //     use: [{
-            //         loader: 'vue-loader',
-            //         options: {
-            //             compilerOptions: {
-            //                 preserveWhitespace: false
-            //             }
-            //         }
-            //     }],
-            //     include: [path.resolve(__dirname, '../src')]
-            // }, 
+            {
+                test: /\.vue$/,
+                use: [{
+                    loader: 'vue-loader',
+                    // options: {
+                    //     compilerOptions: {
+                    //         preserveWhitespace: false
+                    //     }
+                    // }
+                }],
+                include: [path.resolve(__dirname, '../src')]
+            }, 
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
@@ -68,13 +68,14 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                use: [{
-                    // loader: 'happypack/loader?id=happyBabel'
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }],
+                // use: [{
+                //     // loader: 'happypack/loader?id=happyBabel'
+                //     use: ['babel-loader', 'eslint-loader'],
+                //     options: {
+                //         presets: ['@babel/preset-env']
+                //     }
+                // }],
+                use: ['babel-loader', 'eslint-loader'],
                 exclude: /node_modules/
             },
             {
@@ -87,7 +88,7 @@ module.exports = {
                             loader: 'file-loader',
                             options: {
                                 name: 'img/[name].[hash:8].[ext]',
-                                // publicPath: '../'
+                                publicPath: '../'
                             }
                         }
                     }
@@ -149,7 +150,7 @@ module.exports = {
         new ExtractTextPlugin('css/[name]_[chunkhash:8].css'),
         new CleanWebpackPlugin(),
         new BundleAnalyzerPlugin(),
-        // new vueLoaderPlugin(),
+        new vueLoaderPlugin(),
         // new HappyPack({
         //     id: 'happyBabel',
         //     loaders: [{
