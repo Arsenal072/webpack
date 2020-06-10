@@ -75,7 +75,8 @@ module.exports = {
                 //         presets: ['@babel/preset-env']
                 //     }
                 // }],
-                use: ['babel-loader', 'eslint-loader'],
+                use: ['babel-loader'],
+                // , 'eslint-loader'
                 exclude: /node_modules/
             },
             {

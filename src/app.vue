@@ -8,13 +8,15 @@
             <div>等分效果</div>
         </div>
         <button @click="a">点击引入js</button>
+        <Form></Form>
     </div>
 </template>
 
 <script>
+import Form from './views/index'
 export default {
     name: "",
-    components: {},
+    components: { Form },
 
     data() {
         return {};
@@ -37,8 +39,6 @@ export default {
         // const { printName } = logger;
         // printName(); // TypeError: Cannot read property 'print' of undefined
     },
-
-    },
     methods: {
         
         a(){
@@ -53,7 +53,7 @@ export default {
 <style lang='scss' scoped>
 .app-wrapper {
     height: 1000px;
-    background-image: url("./assets/images/veer-141542994.jpg");
+    // background-image: url("./assets/images/veer-141542994.jpg");
     span {
         font-size: 18px;
         color: orange;

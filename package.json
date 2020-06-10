@@ -52,6 +52,7 @@
     "webpack-parallel-uglify-plugin": "^1.1.2"
   },
   "dependencies": {
+    "async-validator": "^3.3.0",
     "element-ui": "^2.13.1",
     "vue": "^2.6.11"
   }
