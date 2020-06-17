@@ -8,6 +8,7 @@
 </template>
 
 <script>
+    import Schema from 'async-validator'
     import Input from './input'
     export default {
         name: '',

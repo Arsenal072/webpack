@@ -22,8 +22,8 @@ export default {
 
   methods: {
     input(e){
-        console.log(e.target.value)
         this.$emit('input', e.target.value)
+        this.$parent.$emit('validate')
     },
     blur(){
         this.$parent.$emit('validate')

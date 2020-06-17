@@ -16,7 +16,7 @@ const vueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
     entry: {
         main: path.resolve(__dirname, '../src/main.js'),
-        backstage: path.resolve(__dirname, '../src/backstage.js')
+        // backstage: path.resolve(__dirname, '../src/backstage.js')
     },
     output: {
         filename: 'js/[name].[hash:8].js',
