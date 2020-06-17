@@ -15,46 +15,49 @@
 </template>
 
 <script>
-    import Form from './Form'
-    import FormItem from './formItem'
-    import Input from './input'
-    export default {
-        name: '',
-        components: {
-            Form,
-            FormItem,
-            Input
-        },
+import Form from "./Form";
+import FormItem from "./formItem";
+import Input from "./input";
+export default {
+    name: "",
+    components: {
+        Form,
+        FormItem,
+        Input
+    },
 
-        data() {
-            return {
-                model: {
-                    usename: '',
-                    password: ''
-                },
-                rules: {
-                    username: [{
+    data() {
+        return {
+            model: {
+                usename: "",
+                password: ""
+            },
+            rules: {
+                username: [
+                    {
                         required: true,
                         message: "请输入用户名"
-                    }],
-                    password: [{
+                    }
+                ],
+                password: [
+                    {
                         required: true,
                         message: "请输入密码"
-                    }]
-                }
-            };
-        },
+                    }
+                ]
+            }
+        };
+    },
 
-        methods: {}
-    }
+    methods: {}
+};
 </script>
 <style lang='scss' scoped>
-    .form-wrapper {
-        width: 80%;
-        margin: 0 auto;
-    }
-
+.form-wrapper {
+    width: 80%;
+    margin: 0 auto;
     .btn {
         width: 60px;
     }
+}
 </style>

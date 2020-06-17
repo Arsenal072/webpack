@@ -15,8 +15,8 @@ const vueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, '../src/main.js'),
-        // backstage: path.resolve(__dirname, '../src/backstage.js')
+        main: ["@babel/polyfill",path.resolve(__dirname, '../src/main.js')],
+        backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
     },
     output: {
         filename: 'js/[name].[hash:8].js',
@@ -24,8 +24,7 @@ module.exports = {
         chunkFilename: 'static/[name]_[chunkhash:8].js',
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.vue$/,
                 use: [{
                     loader: 'vue-loader',
@@ -36,7 +35,7 @@ module.exports = {
                     // }
                 }],
                 include: [path.resolve(__dirname, '../src')]
-            }, 
+            },
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
@@ -47,24 +46,19 @@ module.exports = {
                             plugins: [require('autoprefixer')],
                         }
                     }]
-                }),
+                })
             },
             {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                    use: ['style-loader', 'css-loader', {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [require('autoprefixer')],
+                        }
+                    }, 'sass-loader']
                 })
-            },
-            {
-                test: /\.less$/,
-                use: ['style-loader', 'css-loader', {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins: [require('autoprefixer')],
-                        
-                    }
-                }, 'less-loader'],
             },
             {
                 test: /\.js$/,
@@ -75,7 +69,13 @@ module.exports = {
                 //         presets: ['@babel/preset-env']
                 //     }
                 // }],
-                use: ['babel-loader'],
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                },
+                // use: ['babel-loader'],
                 // , 'eslint-loader'
                 exclude: /node_modules/
             },
@@ -197,5 +197,3 @@ module.exports = {
     //     ElementUI: 'ElementUI'
     // }
 }
-
-
