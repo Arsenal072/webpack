@@ -6,7 +6,6 @@ const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
 // const CopyWebapckPlugin = require('copy-webpack-plugin')
 // const HappyPack = require('happypack')
@@ -19,7 +18,7 @@ module.exports = {
         backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
     },
     output: {
-        filename: 'js/[name].[hash:8].js',
+        filename: 'js/[name]_[hash:8].js',
         path: path.resolve(__dirname, '../dist'),
         chunkFilename: 'static/[name]_[chunkhash:8].js',
     },
@@ -150,7 +149,7 @@ module.exports = {
         }),
         new ExtractTextPlugin('css/[name]_[chunkhash:8].css'),
         new CleanWebpackPlugin(),
-        new BundleAnalyzerPlugin(),
+        
         new vueLoaderPlugin(),
         // new HappyPack({
         //     id: 'happyBabel',
@@ -193,7 +192,8 @@ module.exports = {
     //     }
     // },
 
-    // externals: {
-    //     ElementUI: 'ElementUI'
-    // }
+    externals: {
+        'vue': 'Vue',
+        'element-ui': 'ELEMENT'
+    }
 }

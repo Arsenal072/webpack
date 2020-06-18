@@ -7,6 +7,7 @@
             <div>等分效果</div>
             <div>等分效果</div>
         </div>
+        <el-button type='primary'>哈哈哈哈</el-button>
         <button @click="a">点击引入js</button>
         <Form></Form>
     </div>
