@@ -12,6 +12,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -165,16 +166,17 @@ module.exports = {
             }],
             threadPool: happyThreadPool//共享进程池
         }),
-        new CopyWebpackPlugin([ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
-            {
-                from: 'dll',
-                to: 'dll'
-            }
-        ]),
-        new webpack.DllReferencePlugin({
-            context: __dirname,
-            manifest: path.resolve('dll', 'vendor_manifest.json')
-        })
+        // new CopyWebpackPlugin([ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
+        //     {
+        //         from: 'dll',
+        //         to: 'dll'
+        //     }
+        // ]),
+        // new webpack.DllReferencePlugin({
+        //     context: __dirname,
+        //     manifest: path.resolve('dll', 'vendor_manifest.json')
+        // }),
+        new HardSourceWebpackPlugin()//7.391s
     ],
     optimization: {
         splitChunks: {
