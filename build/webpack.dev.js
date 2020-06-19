@@ -2,6 +2,7 @@
 const Webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
 const WebpackMerge = require('webpack-merge')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = WebpackMerge(webpackConfig, {
     mode: 'development',
     devtool: 'cheap-module-eval-source-map',
@@ -12,6 +13,7 @@ module.exports = WebpackMerge(webpackConfig, {
         compress: true
     },
     plugins: [
-        new Webpack.HotModuleReplacementPlugin()
+        new Webpack.HotModuleReplacementPlugin(),
+        new BundleAnalyzerPlugin()
     ]
 })

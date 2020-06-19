@@ -7,20 +7,21 @@ const {
 } = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const vueLoaderPlugin = require('vue-loader/lib/plugin')
-// const CopyWebapckPlugin = require('copy-webpack-plugin')
-// const HappyPack = require('happypack')
-// const os = require('os')
-// const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+// const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
+const HappyPack = require('happypack')
+const os = require('os')
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 
 module.exports = {
     entry: {
-        main: ["@babel/polyfill",path.resolve(__dirname, '../src/main.js')],
-        backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')]
+        main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')],
+        backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')],
     },
     output: {
         filename: 'js/[name]_[hash:8].js',
         path: path.resolve(__dirname, '../dist'),
-        chunkFilename: 'static/[name]_[chunkhash:8].js',
+        chunkFilename: 'js/[name]_[chunkhash:8].js',
     },
     module: {
         rules: [{
@@ -61,21 +62,19 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                // use: [{
-                //     // loader: 'happypack/loader?id=happyBabel'
-                //     use: ['babel-loader', 'eslint-loader'],
+                use: [{
+                    loader: 'happypack/loader?id=happyBabel'
+                    // use: ['babel-loader', 'eslint-loader'],
+                    // options: {
+                    //     presets: ['@babel/preset-env']
+                    // }
+                }],
+                // use: {
+                //     loader: 'babel-loader',
                 //     options: {
                 //         presets: ['@babel/preset-env']
                 //     }
-                // }],
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                },
-                // use: ['babel-loader'],
-                // , 'eslint-loader'
+                // },
                 exclude: /node_modules/
             },
             {
@@ -149,49 +148,66 @@ module.exports = {
         }),
         new ExtractTextPlugin('css/[name]_[chunkhash:8].css'),
         new CleanWebpackPlugin(),
-        
+
         new vueLoaderPlugin(),
-        // new HappyPack({
-        //     id: 'happyBabel',
-        //     loaders: [{
-        //         loader: 'babel-loader',
-        //         options: {
-        //             presets: ['@babel/preset-env'],
-        //             cacheDirectory: true
-        //         }
-        //     }],
-        //     threadPool: happyThreadPool//共享进程池
-        // }),
-
-        // new webpack.DllPlugin({
-        //     context: __dirname,
-        //     manifest: require('./vendor-manifest.json')
-        // }),
-        // new CopyWebapckPlugin([{
-        //     from: 'static',
-        //     to: 'static'
-        // }])
+        new HappyPack({
+            id: 'happyBabel',
+            loaders: [{
+                // loader: 'babel-loader',
+                // options: {
+                //     presets: ['@babel/preset-env'],
+                //     cacheDirectory: true
+                // }
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env']
+                }
+            }],
+            threadPool: happyThreadPool//共享进程池
+        }),
+        new CopyWebpackPlugin([ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
+            {
+                from: 'dll',
+                to: 'dll'
+            }
+        ]),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: path.resolve('dll', 'vendor_manifest.json')
+        })
     ],
-    // optimization:{
-    //     //帮我们⾃动做代码分割
-    //     splitChunks:{
-    //         chunks:"all",//默认是⽀持异步，我们使⽤all
-    //         maxInitialRequests: Infinity,
-    //         minSize: 300000, // 依赖包超过300000bit将被单独打包
-    //         automaticNameDelimiter: '-',
-    //         cacheGroups: {
-    //             vendor: {
-    //                 test: /[\\/]node_modules[\\/]/,
-    //                 name(module) {
-    //                     const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-    //                     return `chunk.${packageName.replace('@', '')}`;
-    //                 },
-    //                 priority: 10
-    //             }
-    //         }
-    //     }
-    // },
-
+    optimization: {
+        splitChunks: {
+            // 表示选择哪些 chunks 进行分割，可选值有：async，initial和all
+            chunks: "all",
+            // 表示新分离出的chunk必须大于等于minSize，默认为30000，约30kb。
+            minSize: 30000,
+            // 表示一个模块至少应被minChunks个chunk所包含才能分割。默认为1。
+            minChunks: 1,
+            // 表示按需加载文件时，并行请求的最大数目。默认为5。
+            maxAsyncRequests: 5,
+            // 表示加载入口文件时，并行请求的最大数目。默认为3。
+            maxInitialRequests: 3,
+            // 表示拆分出的chunk的名称连接符。默认为~。如chunk~vendors.js
+            automaticNameDelimiter: '~',
+            // 设置chunk的文件名。默认为true。当为true时，splitChunks基于chunk和cacheGroups的key自动命名。
+            name: true,
+            // cacheGroups 下可以可以配置多个组，每个组根据test设置条件，符合test条件的模块，就分配到该组。模块可以被多个组引用，但最终会根据priority来决定打包到哪个组中。默认将所有来自 node_modules目录的模块打包至vendors组，将两个以上的chunk所共享的模块打包至default组。
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    name: "cacheGroups"
+                },
+                // 
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            }
+        }
+    },
     externals: {
         'vue': 'Vue',
         'element-ui': 'ELEMENT'
