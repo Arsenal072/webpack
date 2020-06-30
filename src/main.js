@@ -3,12 +3,11 @@ import App from './app.vue'
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 // import './assets/css/main.css'
-
 // Vue.use(ElementUI);
 new Vue({
     render: h => h(App)
 }).$mount('#app')
-
+console.log('byebye loader')
 import( /* webpackChunkName: "test" */ './test').then((module) => {
     const test = module.default
     // function SupType(name){

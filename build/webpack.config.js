@@ -64,18 +64,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: [{
-                    loader: 'happypack/loader?id=happyBabel'
-                    // use: ['babel-loader', 'eslint-loader'],
-                    // options: {
-                    //     presets: ['@babel/preset-env']
-                    // }
+                    loader: path.resolve(__dirname, './loaders/replace-loader.js'),
+                    // loader: 'happypack/loader?id=happyBabel'
+                    // use: ['eslint-loader']
                 }],
-                // use: {
-                //     loader: 'babel-loader',
-                //     options: {
-                //         presets: ['@babel/preset-env']
-                //     }
-                // },
                 exclude: /node_modules/
             },
             {
@@ -136,6 +128,9 @@ module.exports = {
         },
         extensions: ['*', '.js', '.json', '.vue']
     },
+    resolveLoader: {
+        modules: ['node_modules', path.resolve(__dirname, './loaders')]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../public/index.html'),
@@ -154,16 +149,18 @@ module.exports = {
         new HappyPack({
             id: 'happyBabel',
             loaders: [{
-                // loader: 'babel-loader',
-                // options: {
-                //     presets: ['@babel/preset-env'],
-                //     cacheDirectory: true
-                // }
                 loader: 'babel-loader',
                 options: {
                     presets: ['@babel/preset-env']
                 }
-            }],
+            }, 
+            {
+                loader: path.resolve(__dirname, './loaders/replace-loader.js'),
+                options: {
+                    name: '參數'
+                }
+            }
+        ],
             threadPool: happyThreadPool//共享进程池
         }),
         // new CopyWebpackPlugin([ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
@@ -176,7 +173,7 @@ module.exports = {
         //     context: __dirname,
         //     manifest: path.resolve('dll', 'vendor_manifest.json')
         // }),
-        new HardSourceWebpackPlugin()//7.391s
+        new HardSourceWebpackPlugin()
     ],
     optimization: {
         splitChunks: {
