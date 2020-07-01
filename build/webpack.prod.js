@@ -11,22 +11,22 @@ module.exports = WebpackMerge(webpackConfig, {
     devtool: 'cheap-module',
     plugins: [
         new BundleAnalyzerPlugin(),
-        new ParallelUglifyPlugin({
-            // cacheDir: path.resolve(__dirname, '../dist/cache'),
-            sourceMap: false,
-            uglifyJS: {
-                output: {
-                    comments: false,
-                    beautify: false
-                },
-                warnings: false,
-                compress: {
-                    drop_console: true,
-                    collapse_vars: false,
-                    reduce_vars: true,
-                }
-            }
-        }),
+        // new ParallelUglifyPlugin({
+        //     // cacheDir: path.resolve(__dirname, '../dist/cache'),
+        //     sourceMap: false,
+        //     uglifyJS: {
+        //         output: {
+        //             comments: false,
+        //             beautify: false
+        //         },
+        //         warnings: false,
+        //         compress: {
+        //             drop_console: true,
+        //             collapse_vars: false,
+        //             reduce_vars: true,
+        //         }
+        //     }
+        // }),
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano')
