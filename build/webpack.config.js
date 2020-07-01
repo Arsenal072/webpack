@@ -13,6 +13,7 @@ const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const DemoWebpackPlugin = require('./plugins/demoWebpackPlugin.js')
 
 module.exports = {
     entry: {
@@ -190,7 +191,8 @@ module.exports = {
         //     context: __dirname,
         //     manifest: path.resolve('dll', 'vendor_manifest.json')
         // })
-        new HardSourceWebpackPlugin()
+        new HardSourceWebpackPlugin(),
+        new DemoWebpackPlugin()
     ],
     optimization: {
         splitChunks: {
