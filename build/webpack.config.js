@@ -24,16 +24,16 @@ module.exports = {
         chunkFilename: 'js/[name]_[chunkhash:8].js',
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.vue$/,
-                use: [{
-                    loader: 'vue-loader',
+                use: ['vue-loader'
                     // options: {
                     //     compilerOptions: {
                     //         preserveWhitespace: false
                     //     }
                     // }
-                }],
+                ],
                 include: [path.resolve(__dirname, '../src')]
             },
             {
@@ -62,19 +62,19 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                use: [{
-                    loader: 'happypack/loader?id=happyBabel'
-                    // use: ['babel-loader', 'eslint-loader'],
-                    // options: {
-                    //     presets: ['@babel/preset-env']
-                    // }
-                }],
-                // use: {
-                //     loader: 'babel-loader',
-                //     options: {
-                //         presets: ['@babel/preset-env']
-                //     }
-                // },
+                use: {
+                    loader: path.resolve(__dirname, './loaders/replace-loader.js'),
+                    options: {
+                        name: 'loader学习'
+                    }
+                },
+                // use: [{
+                //     loader: 'happypack/loader?id=happyBabel'
+                //     // use: ['babel-loader', 'eslint-loader'],
+                //     // options: {
+                //     //     presets: ['@babel/preset-env']
+                //     // }
+                // }],
                 exclude: /node_modules/
             },
             {
@@ -126,12 +126,15 @@ module.exports = {
 
         ]
     },
+    resolveLoader: {
+        modules: [path.resolve(__dirname, './loaders/replace-loader.js'), 'node_modules']
+    },
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.runtime.esm.js',
             '@': path.resolve(__dirname, '../src'),
             'assets': path.resolve(__dirname, '../src/assets'),
-            'components': path.resolve(__dirname, '../src/components')
+            'components': path.resolve(__dirname, '../src/components'),
         },
         extensions: ['*', '.js', '.json', '.vue']
     },
@@ -150,21 +153,21 @@ module.exports = {
         new CleanWebpackPlugin(),
 
         new vueLoaderPlugin(),
-        new HappyPack({
-            id: 'happyBabel',
-            loaders: [{
-                // loader: 'babel-loader',
-                // options: {
-                //     presets: ['@babel/preset-env'],
-                //     cacheDirectory: true
-                // }
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-env']
-                }
-            }],
-            threadPool: happyThreadPool//共享进程池
-        }),
+        // new HappyPack({
+        //     id: 'happyBabel',
+        //     loaders: [{
+        //         // loader: 'babel-loader',
+        //         // options: {
+        //         //     presets: ['@babel/preset-env'],
+        //         //     cacheDirectory: true
+        //         // }
+        //         loader: 'babel-loader',
+        //         options: {
+        //             presets: ['@babel/preset-env']
+        //         }
+        //     }],
+        //     threadPool: happyThreadPool//共享进程池
+        // }),
         new CopyWebpackPlugin([ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
             {
                 from: 'dll',

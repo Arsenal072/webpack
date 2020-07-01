@@ -8,7 +8,7 @@ import App from './app.vue'
 new Vue({
     render: h => h(App)
 }).$mount('#app')
-
+console.log('hello loader！')
 import( /* webpackChunkName: "test" */ './test').then((module) => {
     const test = module.default
     // function SupType(name){
