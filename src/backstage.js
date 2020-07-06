@@ -4,3 +4,11 @@ import(/* webpackChunkName: "backstageTest" */ './test').then((module)=>{
     // console.log('hello backstage!')
     test()
 })
+var foo = 'bar'
+var kkk = 'hello 路由懒加载'
+setTimeout(() => foo = 'baz', 500);
+export default {
+    kkk,
+    foo
+};
+
