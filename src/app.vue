@@ -1,7 +1,8 @@
 <!-- app.vue -->
 <template>
     <div class='app-wrapper'>
-        <span>app运行成功哈哈哈哈</span>
+        <router-view></router-view>
+        <!-- <span>app运行成功哈哈哈哈</span>
         <div>风格化风格化风格规划规范化化445</div>
         <div class="box">
             <div>等分效果</div>
@@ -9,15 +10,15 @@
         </div>
         <el-button type='primary'>哈哈哈哈</el-button>
         <button @click="a">点击引入js</button>
-        <Form></Form>
+        <Form></Form> -->
     </div>
 </template>
 
 <script>
-import Form from './views/index'
+// import Form from './views/index'
 export default {
     name: "",
-    components: { Form },
+    // components: { Form },
 
     data() {
         return {};
@@ -36,18 +37,18 @@ export default {
 
         // const logger = new Logger();
         // logger.printName()
-        console.log(Promise.resolve(1).then(res=>{console.log('2')}))
+        // console.log(Promise.resolve(1).then(res=>{console.log('2')}))
         // const { printName } = logger;
         // printName(); // TypeError: Cannot read property 'print' of undefined
     },
     methods: {
         
-        a(){
-            import(/* webpackChunkName: "test" */ './test').then((module)=>{
-                const test = module.default
-                test()
-            })
-        }
+        // a(){
+        //     import(/* webpackChunkName: "test" */ './test').then((module)=>{
+        //         const test = module.default
+        //         test()
+        //     })
+        // }
     }
 };
 </script>

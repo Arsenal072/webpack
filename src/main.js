@@ -1,17 +1,36 @@
 // import Vue from 'vue'
-// import App from './app.vue'
+import App from './app.vue'
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 // import './assets/css/main.css'
-
 // Vue.use(ElementUI);
-// new Vue({
-//     render: h => h(App)
-// }).$mount('#app')
-console.log('hello loader!!!')
-// const obj = require('./backstage')
-import obj from './backstage'
-console.log('obj.title', obj.foo)
+//路由懒加载
+function load(component) {
+    return () => import(`@/views/${component}`)
+}
+// 路由配置
+const router = new VueRouter({
+    mode: 'hash',
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: load('Home'),
+            meta: {
+                title: '首页'
+            }
+        },
+    ]
+});
+new Vue({
+    router,
+    render: h => h(App)
+}).$mount('#app')
+// console.log('hello loader!!!')
+// // const obj = require('./backstage')
+// import obj from './backstage'
+// console.log('obj.title', obj.foo)
+
 // import( /* webpackChunkName: "test" */ './test').then((module) => {
 //     const test = module.default
 //     function SupType(name){

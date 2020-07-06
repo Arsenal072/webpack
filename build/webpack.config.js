@@ -18,7 +18,7 @@ const DemoWebpackPlugin = require('./plugins/demoWebpackPlugin.js')
 module.exports = {
     entry: {
         main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')],
-        backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')],
+        // backstage: ["@babel/polyfill", path.resolve(__dirname, '../src/backstage.js')],
     },
     output: {
         filename: 'js/[name]_[hash:8].js',
@@ -146,11 +146,11 @@ module.exports = {
             filename: 'index.html',
             chunks: ['main']
         }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../public/backstage.html'),
-            filename: 'backstage.html',
-            chunks: ['backstage']
-        }),
+        // new HtmlWebpackPlugin({
+        //     template: path.resolve(__dirname, '../public/backstage.html'),
+        //     filename: 'backstage.html',
+        //     chunks: ['backstage']
+        // }),
         new ExtractTextPlugin('css/[name]_[chunkhash:8].css'),
         new CleanWebpackPlugin(),
 
